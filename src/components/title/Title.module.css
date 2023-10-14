@@ -1,0 +1,17 @@
+.title {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin: 40px;
+}
+
+.title p {
+  color: #6B8CFF;
+  font-size: 40px;
+  margin: 0px;
+}
+
+.title p:first-child{
+  margin-bottom: -6px;
+  font-size: 64px;
+}

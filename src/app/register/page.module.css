@@ -1,0 +1,25 @@
+.page-background {
+  background-color: #B7B7B7;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-container {
+  background-color: #F5F5F5;
+  height: 100%;
+  width: 100%;
+  padding: 30px;
+  height: 100%;
+  box-sizing: border-box;
+
+  @media (min-width: 600px) {
+    height: 80%;
+    width: 600px;
+    padding-top: 60px;
+    border-radius: 20px;
+    padding-left: 150px;
+    padding-right: 150px;
+  }
+}

@@ -1,0 +1,35 @@
+.input {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.25);
+  margin: 20px 0;
+}
+
+.img-conteiner {
+  display: flex;
+  height: 100%; 
+  width: auto; 
+  border-radius: 20px;
+  background-color: #6B8CFF;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-conteiner img {
+  width: 80%;
+}
+
+.input input {
+  border: 0;
+  width: 80%;
+  font-size: 15px;
+  margin-left: 5px;
+}
+
+.input input:focus{
+  outline: none;
+}
