@@ -8,49 +8,37 @@ import Greeting from "@/src/components/greeting/Greeting"
 import Button from "@/src/components/button/Button"
 import styles from "./page.module.css"
 import Title from "@/src/components/title/Title"
-import AuthTokenSingleton from "@/src/utils/AuthTokenSingleton"
 import Error from "@/src/components/error/Error"
+import authUtils from "@/src/utils/authUtils"
+import queries from "@/src/utils/queries"
 
 const lexendDeca = Lexend_Deca({ subsets: ["latin"] })
 
 export default function Login() {
+  const [error, setError] = useState()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [error, setError] = useState()
-  
   const router = useRouter()
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    let res = await fetch("/api/v1/auth/login", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        password, password
-      })
-    })
-
-    if(res.status == 401) {
-      setError("Credenciais Inválidas.")
-    }
-    //TODO: save token and redirect to home page
-  }
-
-  const register = (event) => {
+  function register() {
     router.push('/register')
   }
-
-  const emailChange = (event) => {
+  function emailChange(event) {
     setEmail(event.target.value)
   }
-
-  const passwordChange = (event) => {
+  function passwordChange(event) {
     setPassword(event.target.value)
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    let res = await queries.login(email, password)
+    if (res.status == 200) {
+      authUtils.saveAuthToken((await res.json()).authtoken)
+      router.push('/')
+    }
+    else if (res.status == 401) setError("Credenciais Inválidas.")
+    else setError("O serviço encontrou um erro.")
   }
 
   return (
@@ -61,7 +49,7 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <Input type="email" placeholder="E-mail" name="email" required onChange={emailChange} icon="/images/person.svg" />
           <Input type="password" placeholder="Senha" name="psw" required onChange={passwordChange} icon="/images/lock.svg" />
-          <Error name="login" message={error}/>
+          <Error name="login" message={error} />
           <Button type="submit" text="Login" />
         </form>
         <div className={styles["registry-container"]}>

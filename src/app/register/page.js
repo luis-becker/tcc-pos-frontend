@@ -8,6 +8,7 @@ import Button from "@/src/components/button/Button"
 import styles from "./page.module.css"
 import Title from "@/src/components/title/Title"
 import Error from "@/src/components/error/Error"
+import queries from "@/src/utils/queries"
 
 export default function Register() {
   
@@ -15,45 +16,28 @@ export default function Register() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState()
+
   const router = useRouter()
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    if (password !== confirmPassword) {
-      setError("Senhas não coincidem.")
-      return
-    }
-    let res = await fetch("/api/v1/auth/register", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        password, password
-      })
-    })
-    if(res.status == 409) {
-      setError('Email já cadastrado.')
-    } else if (res.status == 201){
-      setError(null)
-      router.push('/login')
-    } else {
-      setError('Não foi possivel criar sua conta.')
-    }
-  }
-
-  const emailChange = (event) => {
+  function emailChange (event) {
     setEmail(event.target.value)
   }
 
-  const confirmPasswordChange = (event) => {
+  function confirmPasswordChange (event) {
     setConfirmPassword(event.target.value)
   }
 
-  const passwordChange = (event) => {
+  function passwordChange (event) {
     setPassword(event.target.value)
+  }
+
+  async function handleSubmit (event) {
+    event.preventDefault()
+    if (password !== confirmPassword) return setError("Senhas não coincidem.")
+    let res = await queries.register(email, password)
+    if (res.status == 201) router.push('/login')
+    if (res.status == 409) setError('Email já cadastrado.')
+    else setError('Não foi possivel criar sua conta.')
   }
 
   return (
