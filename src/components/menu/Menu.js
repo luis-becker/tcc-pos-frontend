@@ -33,15 +33,18 @@ export default function Menu(props) {
 
   return (
     <div className={styles['menu-container']}>
-      <button className={isActive.config} onClick={onClickConfig}>
-        <img src="/images/person_gear.svg" />
-      </button>
-      <button className={isActive.schedules} onClick={onClickSchedules}>
-        <img src="/images/calendar_check.svg" />
-      </button>
-      <button className={isActive.share} onClick={onClickShare}>
-        <img src="/images/share.svg" />
-      </button>
+      <div className={styles['menu-bar']}/>
+      <div className={styles['buttons-container']}>
+        <button className={isActive.config} onClick={onClickConfig}>
+          <img src="/images/person_gear.svg" />
+        </button>
+        <button className={isActive.schedules} onClick={onClickSchedules}>
+          <img src="/images/calendar_check.svg" />
+        </button>
+        <button className={isActive.share} onClick={onClickShare}>
+          <img src="/images/share.svg" />
+        </button>
+      </div>
     </div>
   )
 }

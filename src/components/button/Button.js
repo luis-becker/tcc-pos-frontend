@@ -1,6 +1,4 @@
 import styles from './Button.module.css'
-import {Lexend_Deca} from "next/font/google"
-const lexendDeca = Lexend_Deca({subsets: ["latin"]})
 
 export default function Button(props) {
   let name = props.id
@@ -10,7 +8,7 @@ export default function Button(props) {
   let onClick = props.onClick
 
   return (
-    <button className={styles.button} type={type} id={id} name={name} style={lexendDeca.style} onClick={onClick}>
+    <button className={styles.button} type={type} id={id} name={name} onClick={onClick}>
       {text}
     </button>
   )

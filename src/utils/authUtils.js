@@ -1,7 +1,6 @@
 'use client'
 
 function saveAuthToken (authToken) {
-  console.log(authToken)
   localStorage.setItem('authToken.value', authToken.value)
   localStorage.setItem('authToken.expires', authToken.expires)
 

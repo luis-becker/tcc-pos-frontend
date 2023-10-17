@@ -1,6 +1,4 @@
 import styles from './Input.module.css'
-import {Lexend_Deca} from "next/font/google"
-const lexendDeca = Lexend_Deca({subsets: ["latin"]})
 
 export default function Input(props) {
   let type = props.type
@@ -16,7 +14,7 @@ export default function Input(props) {
       <div className={styles['img-conteiner']}>
         <img src={icon} />
       </div>
-      <input type={type} name={name} placeholder={placeholder} id={id} onChange={onChange} required={required} style={lexendDeca.style}/>
+      <input type={type} name={name} placeholder={placeholder} id={id} onChange={onChange} required={required}/>
     </div>
   )
 }

@@ -1,0 +1,62 @@
+.schedule-container {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 20px;
+    padding: 10px 0;
+    padding-bottom: 0px;
+    box-sizing: border-box;
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.25);
+    border-width: 0;
+    cursor: pointer;
+    transition: height 0.2s ease-in-out;
+    overflow: hidden;
+    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+}
+
+.schedule-container:focus {
+    height: 85px;
+    cursor: default;
+}
+
+.schedule-container > div {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.schedule-container > div > p{
+    margin: 0;
+    color: #505050;
+    font-size: 14px;
+    max-width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.schedule-container > div:first-child > p{
+    font-size: 18px;
+}
+
+.cancel {
+    height: 100%;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 !important;
+    margin-top: 10px;
+    background-color: rgba(255,0,0,0.50);
+    cursor: pointer;
+}
+
+.cancel p {
+    color: #313131 !important;
+}
+
+.hide {
+    display: none !important;
+}

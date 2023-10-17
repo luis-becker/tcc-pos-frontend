@@ -24,8 +24,14 @@ function getSchedules() {
   return authUtils.fetchAuth(SCHEDULE_URI, {method})
 }
 
+function cancelSchedule(schedule) {
+  let method = 'DELETE'
+  return authUtils.fetchAuth(SCHEDULE_URI + `/${schedule._id}`, {method})
+}
+
 export default {
   register,
   login,
-  getSchedules
+  getSchedules,
+  cancelSchedule
 }

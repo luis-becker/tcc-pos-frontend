@@ -1,6 +1,6 @@
+'use client'
+
 import styles from './Greeting.module.css'
-import {Lexend_Deca} from "next/font/google"
-const lexendDeca = Lexend_Deca({subsets: ["latin"]})
 
 export default function Greeting(props) {
   let name = props.id
@@ -9,7 +9,7 @@ export default function Greeting(props) {
 
   return (
     <div className={styles.greeting} id={id} name={name}>
-      <p style={lexendDeca.style}>{greeting}</p>
+      <p>{greeting}</p>
     </div>
   )
 }
