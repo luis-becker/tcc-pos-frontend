@@ -12,6 +12,8 @@
 .header-container div:first-child {
     display: flex;
     flex-direction: row;
+    flex-grow: 1;
+    box-sizing: border-box;
 }
 
 .img-container {
@@ -19,9 +21,10 @@
     border-radius: 50%;
     width: 70px !important;
     height: 70px !important;
+    flex-grow: 0 !important;
 }
 
-.img-container img{
+.img-container img {
     width: 70px;
     height: 70px;
 }
@@ -29,6 +32,7 @@
 .menu-container {
     display: none;
     align-self: flex-end;
+
     @media (min-width: 700px) {
         display: block;
     }
@@ -41,6 +45,8 @@
     justify-content: center;
     padding-left: 10px;
     box-sizing: border-box;
+    flex-grow: 1;
+    max-width: 70%;
 }
 
 .header-title-container p {
@@ -48,6 +54,7 @@
     font-size: 26px;
     color: #313131;
     text-overflow: ellipsis;
+
     @media (max-width: 320px) {
         font-size: 20px;
     }
@@ -55,8 +62,33 @@
 
 .header-container p:first-child {
     font-size: 18px !important;
-    margin-bottom: -5px;
+
     @media (max-width: 320px) {
         font-size: 16px !important;
     }
+}
+
+.header-title-container input {
+    margin: 0;
+    margin-bottom: -5px;
+    font-size: 26px;
+    color: #313131;
+    text-overflow: ellipsis;
+
+    @media (max-width: 320px) {
+        font-size: 20px;
+    }
+
+    border: none;
+    background-color: #DFE6FF;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.header-title-container input::placeholder {
+    color: #313131;
+}
+
+.header-title-container input:focus {
+    outline: none;
 }

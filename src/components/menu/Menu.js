@@ -24,7 +24,7 @@ export default function Menu(props) {
   }
   function onClickSchedules() {
     if (isActive.schedules) return
-    router.push('/agendamentos')
+    router.push('/')
   }
   function onClickShare() {
     if (isActive.share) return

@@ -2,9 +2,9 @@
 
 import Menu from '../menu/Menu'
 import styles from './Header.module.css'
-import {Lexend_Deca} from "next/font/google"
+import { Lexend_Deca } from "next/font/google"
 
-const lexendDeca = Lexend_Deca({subsets: ["latin"], weight:'500'})
+const lexendDeca = Lexend_Deca({ subsets: ["latin"], weight: '500' })
 
 export default function Header(props) {
   return (
@@ -15,11 +15,14 @@ export default function Header(props) {
         </div>
         <div className={styles['header-title-container']}>
           <p style={lexendDeca.style}>{props.titleFirst}</p>
-          <p style={lexendDeca.style}>{props.titleSecond}</p>
+          {!props.config ?
+            (<p style={lexendDeca.style}>{props.titleSecond}</p>) :
+            (<input type="text" placeholder={props.titleSecond} style={lexendDeca.style} onBlur={props.callback}/>)
+          }
         </div>
       </div>
       <div className={styles['menu-container']}>
-        <Menu active={props.menuActive}/>
+        <Menu active={props.menuActive} />
       </div>
     </div>
   )
