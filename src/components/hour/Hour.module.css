@@ -1,0 +1,12 @@
+.hour {
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #505050;
+    margin-bottom: 10px;
+}
