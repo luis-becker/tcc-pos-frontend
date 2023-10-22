@@ -1,0 +1,102 @@
+.page-background {
+  background-color: #B7B7B7;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-container {
+  display: flex;
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (min-width: 700px) {
+      height: 90%;
+      width: 700px;
+      border-radius: 20px;
+  }
+}
+
+.menu-container {
+  flex-grow: 0;
+  padding: 0 !important;
+  @media (min-width: 700px){
+      display: none;
+  }
+}
+
+.header-content {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header-content > div:last-child{
+  width: 100%;
+  flex-grow: 1;
+  margin-top: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+
+  overflow: scroll;
+}
+
+.header-content >div:last-child::-webkit-scrollbar {
+  width: 0px;
+}
+
+.share-link-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: white;
+  border-radius: 20px;
+  padding: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.share-link-container > p {
+  margin: 5px;
+  font-size: 18px;
+
+  @media (max-width: 300px) {
+    font-size: 16px;
+  }
+}
+
+.share-link-container > p:last-child {
+  margin-bottom: 5px;
+  background-color: #eeeeee;
+  font-size: 16px;
+  padding: 0 5px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 90%;
+  display: block;
+  overflow: hidden;
+
+  user-select: all;
+
+  @media (max-width: 300px) {
+    font-size: 14px;
+  }
+}

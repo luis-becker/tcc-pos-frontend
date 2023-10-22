@@ -13,8 +13,8 @@ export default function Menu(props) {
     case 'schedules':
       isActive.schedules = styles.active
       break
-    case 'share':
-      isActive.share = styles.active
+    case 'info':
+      isActive.info = styles.active
       break;
   }
 
@@ -27,8 +27,8 @@ export default function Menu(props) {
     router.push('/')
   }
   function onClickShare() {
-    if (isActive.share) return
-    router.push('/Info')
+    if (isActive.info) return
+    router.push('/info')
   }
 
   return (
@@ -41,7 +41,7 @@ export default function Menu(props) {
         <button className={isActive.schedules} onClick={onClickSchedules}>
           <img src="/images/calendar_check.svg" />
         </button>
-        <button className={isActive.share} onClick={onClickShare}>
+        <button className={isActive.info} onClick={onClickShare}>
           <img src="/images/globe.svg" />
         </button>
       </div>
