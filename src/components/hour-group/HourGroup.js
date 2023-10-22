@@ -38,8 +38,8 @@ export default function HourGroup(props) {
     return (
         <div className={styles['hour-group']}>
             {renderHourList()}
-            <button onClick={onClick}>+</button>
-            <button onClick={onClickCopy}><img src='/images/copy.svg'/></button>
+            {newCallback !== undefined && <button onClick={onClick}>+</button>}
+            {copyCallback !== undefined && <button onClick={onClickCopy}><img src='/images/copy.svg'/></button>}
         </div>
     )
 }

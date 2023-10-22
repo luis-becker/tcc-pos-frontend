@@ -49,6 +49,11 @@ function createUser(user) {
   return authUtils.fetchAuth(USER_URI, {method, headers, body})
 }
 
+function getUserById(id) {
+  let method = 'GET'
+  return authUtils.fetchAuth(USER_URI+'/'+id, {method})
+}
+
 export default {
   register,
   login,
@@ -56,5 +61,6 @@ export default {
   cancelSchedule,
   getUser,
   updateUser,
-  createUser
+  createUser,
+  getUserById
 }
