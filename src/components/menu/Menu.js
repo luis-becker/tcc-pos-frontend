@@ -28,7 +28,7 @@ export default function Menu(props) {
   }
   function onClickShare() {
     if (isActive.share) return
-    router.push('/share')
+    router.push('/Info')
   }
 
   return (
@@ -42,7 +42,7 @@ export default function Menu(props) {
           <img src="/images/calendar_check.svg" />
         </button>
         <button className={isActive.share} onClick={onClickShare}>
-          <img src="/images/share.svg" />
+          <img src="/images/globe.svg" />
         </button>
       </div>
     </div>

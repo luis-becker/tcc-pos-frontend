@@ -8,19 +8,24 @@ import queries from '@/src/utils/queries'
 import { useRouter } from 'next/navigation'
 import HourGroup from '@/src/components/hour-group/HourGroup'
 import { Lexend_Deca } from "next/font/google"
+import useWindowDimensions from '@/src/utils/useWindowDimensions'
+import dateUtils from '@/src/utils/dateUtils'
 
 const lexendDeca = Lexend_Deca({ subsets: ["latin"] })
 
 export default function config() {
-  
+
   const router = useRouter()
   const [user, setUser] = useState({ name: 'Loading...' })
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [inputHour, setInputHour] = useState({ weekDay: null, startTime: { hour: null, minute: null }, endTime: { hour: null, minute: null } })
-  
-    useEffect(() => {
-      fetchUser()
-    }, [])
+  const [wDay, setWDay] = useState(0)
+  const { width: windowWidth } = useWindowDimensions()
+  const [modalType, setModalType] = useState('new')
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
 
   function clearInputs() {
     let inputs = document.getElementsByTagName('input')
@@ -35,8 +40,21 @@ export default function config() {
     setIsModalOpen(false)
   }
 
-  function openModal(day) {
+  function openModalNew(day) {
+    setModalType('new')
     inputHour.weekDay = day
+    setIsModalOpen(true)
+  }
+
+  function openModalDetails(hour) {
+    setModalType('details')
+    setInputHour(hour)
+    setIsModalOpen(true)
+  }
+
+  function openModalCopy(weekday) {
+    setModalType('copy')
+    setWDay(weekday)
     setIsModalOpen(true)
   }
 
@@ -65,34 +83,18 @@ export default function config() {
   }
 
   function updateHour(e) {
+    console.log(e.target.value)
     let name = e.target.name
     let value = e.target.value
-    let hour = inputHour
+    let hour = value.split(':')[0]
+    let minute = value.split(':')[1]
 
-    switch (name) {
-      case 'startHour':
-        if (value < 0 || value > 23) hour.startTime.hour = null
-        hour.startTime.hour = Number(e.target.value)
-        break
-      case 'startMinute':
-        if (value < 0 || value > 59) hour.startTime.minute = null
-        hour.startTime.minute = Number(e.target.value)
-        break
-      case 'endHour':
-        if (value < 0 || value > 23) hour.endTime.hour = null
-        hour.endTime.hour = Number(e.target.value)
-        break
-      case 'endMinute':
-        if (value < 0 || value > 59) hour.endTime.minute = null
-        hour.endTime.minute = Number(e.target.value)
-        break
-    }
-
-    setInputHour(hour)
+    if (name == 'startTime') inputHour.startTime = { hour, minute }
+    if (name == 'endTime') inputHour.endTime = { hour, minute }
+    setInputHour(inputHour)
   }
 
   async function updateAgenda() {
-    console.log(inputHour)
     if (inputHour.weekDay == null) return
     if (inputHour.startTime.hour == null) return
     if (inputHour.startTime.minute == null) return
@@ -106,13 +108,191 @@ export default function config() {
     closeModal()
   }
 
-  function renderHourGroups() {
+  async function removeFromAgenda() {
+    let userToUpdate = user
+    let newAgenda = user.agenda.filter((e) => {
+      if (e.weekDay != inputHour.weekDay) return true
+      if (e.startTime.hour != inputHour.startTime.hour) return true
+      if (e.startTime.minute != inputHour.startTime.minute) return true
+      if (e.endTime.hour != inputHour.endTime.hour) return true
+      if (e.endTime.minute != inputHour.endTime.minute) return true
+      return false
+    })
+    userToUpdate.agenda = newAgenda
+    await updateUser(userToUpdate)
+    closeModal()
+  }
+
+  function getHoursFromWeekDay(wday) {
     let agenda = user.agenda
+    return agenda?.filter((e) => {
+      return e.weekDay == wday
+    })
+  }
+
+  function renderHourGroups() {
     let hourGroups = []
-    for (let i = 0; i < 7; i++) {
-      hourGroups.push(<HourGroup callback={openModal} weekDay={i} />)
+    let nGroups = 7
+    let currWeekDay = 0
+    if (windowWidth < 700) {
+      nGroups = 1
+      currWeekDay += wDay
+    }
+    for (let i = 0; i < nGroups; i++) {
+      hourGroups.push(<HourGroup newCallback={openModalNew} detailsCallback={openModalDetails} copyCallback={openModalCopy} weekDay={i + currWeekDay} hourList={getHoursFromWeekDay(i + currWeekDay)} key={`hour-group-${i}`} />)
     }
     return hourGroups
+  }
+
+  function renderWDaysNames() {
+    let names = []
+    let nGroups = 7
+    let currWeekDay = 0
+    if (windowWidth < 700) {
+      nGroups = 1
+      currWeekDay += wDay
+    }
+    for (let i = 0; i < nGroups; i++) {
+      names.push(<span key={`wday-${i}`}>{dateUtils.getWeekdayName(i + currWeekDay)}</span>)
+    }
+    return names
+  }
+
+  function nextWeekday() {
+    let nextWeekday = wDay + 1
+    if (nextWeekday == 7) nextWeekday = 0
+    setWDay(nextWeekday)
+  }
+
+  function previousWeekday() {
+    let previousWeekday = wDay - 1
+    if (previousWeekday == -1) previousWeekday = 6
+    setWDay(previousWeekday)
+  }
+
+  async function copyHours(e) {
+    e.preventDefault()
+    let inputs = document.getElementsByName('wday-radio')
+    let checked = Array.from(inputs).find(e=>e.checked)
+    
+    let hoursToCopy = user.agenda.filter(e=>e.weekDay==checked.value)
+    let copiedHours = hoursToCopy.map((e)=> {
+      let hour = {...e}
+      hour.weekDay = wDay
+      return hour
+    })
+    
+    let userAgenda = user.agenda.filter(e=>e.weekDay!=wDay)
+    userAgenda.push(...copiedHours)
+
+    let userToUpdate = {...user}
+    userToUpdate.agenda = userAgenda
+    await updateUser(userToUpdate)
+    closeModal()
+  }
+
+  function getModalContent() {
+    if (modalType == 'new') return (
+      <form className={styles['modal']}>
+        <p>Novo Horário</p>
+        <div>
+          <p>início: </p>
+          <input type="time" placeholder='00' onChange={updateHour} name='startTime' required />
+        </div>
+        <div>
+          <p>fim: </p>
+          <input type="time" onChange={updateHour} name='endTime' required />
+        </div>
+        <div>
+          <button type='button' style={lexendDeca.style} onClick={closeModal}>Cancelar</button>
+          <button type='submit' style={lexendDeca.style} onClick={updateAgenda} className={styles['danger-button']}>Criar</button>
+        </div>
+      </form>
+    )
+    if (modalType == 'details') {
+      let startHour = inputHour.startTime.hour < 10 ? `0${inputHour.startTime.hour}` : inputHour.startTime.hour
+      let startMinute = inputHour.startTime.minute < 10 ? `0${inputHour.startTime.minute}` : inputHour.startTime.minute
+      let endHour = inputHour.endTime.hour < 10 ? `0${inputHour.endTime.hour}` : inputHour.endTime.hour
+      let endMinute = inputHour.endTime.minute < 10 ? `0${inputHour.endTime.minute}` : inputHour.endTime.minute
+      let weekDayName = dateUtils.getWeekdayName(inputHour.weekDay)
+      return (
+        <>
+          <p>Detalhes do horário</p>
+          <div>
+            <span>{weekDayName}</span>
+          </div>
+          <div>
+            <span>{`início: ${startHour}h${startMinute}`}</span>
+          </div>
+          <div>
+            <span>{`fim: ${endHour}h${endMinute}`}</span>
+          </div>
+          <div>
+            <button style={lexendDeca.style} onClick={removeFromAgenda} className={styles['danger-button']}>Remover</button>
+            <button style={lexendDeca.style} onClick={closeModal}>Cancelar</button>
+          </div>
+        </>
+      )
+    }
+    if (modalType == 'copy') {
+      let inputs = [
+        (
+          <div key="radio-domingo" wday="0">
+            <input type="radio" id="radio-domingo" name="wday-radio" value="0" />
+            <label htmlFor="radio-domingo">Domingo</label><br />
+          </div>
+        ),
+        (
+          <div key="radio-segunda" wday="1">
+            <input type="radio" id="radio-segunda" name="wday-radio" value="1" />
+            <label htmlFor="radio-segunda">Segunda</label><br />
+          </div>
+        ),
+        (
+          <div key="radio-terca" wday="2">
+            <input type="radio" id="radio-terca" name="wday-radio" value="2" />
+            <label htmlFor="radio-terca">Terça</label><br />
+          </div>
+        ),
+        (
+          <div key="radio-quarta" wday="3">
+            <input type="radio" id="radio-quarta" name="wday-radio" value="3" />
+            <label htmlFor="radio-quarta">Quarta</label><br />
+          </div>
+        ),
+        (
+          <div key="radio-quinta" wday="4">
+            <input type="radio" id="radio-quinta" name="wday-radio" value="4" />
+            <label htmlFor="radio-quinta">Quinta</label><br />
+          </div>
+        ),
+        (
+          <div key="radio-sexta" wday="5">
+            <input type="radio" id="radio-sexta" name="wday-radio" value="5" />
+            <label htmlFor="radio-sexta">Sexta</label><br />
+          </div>
+        ),
+        (
+          <div key="radio-sabado" wday="6">
+            <input type="radio" id="radio-sabado" name="wday-radio" value="6" />
+            <label htmlFor="radio-sabado">Sabado</label><br />
+          </div>
+        ),
+      ]
+      return (
+        <form className={styles['modal']} onSubmit={copyHours}>
+          <p>Copiar horários</p>
+          {inputs.filter((e) => {
+            if (Number(e.props.wday) == wDay) return false
+            return true
+          })}
+          <div>
+            <button type='button' style={lexendDeca.style} onClick={closeModal}>Cancelar</button>
+            <button type='submit' style={lexendDeca.style} className={styles['danger-button']}>Copiar</button>
+          </div>
+        </form>
+      )
+    }
   }
 
   return (
@@ -120,33 +300,22 @@ export default function config() {
       <div className={styles['page-container']}>
         <div className={styles['header-content']}>
           <Header menuActive='config' titleFirst='Configuração' titleSecond={user.name} config callback={updateName} />
-          <div>
-            <HourGroup callback={openModal} weekDay={0} />
+          <div className={styles['wday-selector']}>
+            <button onClick={previousWeekday}><img src="/images/chevron_left.svg" /></button>
+            {renderWDaysNames()}
+            <button onClick={nextWeekday}><img src="/images/chevron_right.svg" /></button>
+          </div>
+          <div className={styles['hour-group-container']}>
+            {renderHourGroups()}
           </div>
         </div>
         <div className={styles['menu-container']}>
           <Menu active='config' />
         </div>
       </div>
-      <div className={`${styles['modal-background']} ${!isModalOpen && styles['hide-modal']}`} onClick={closeModal}>
+      <div className={`${styles['modal-background']} ${!isModalOpen && styles['hide-modal']}`}>
         <div className={styles['modal']} onClick={(e) => { e.stopPropagation() }} id='new-hour-modal'>
-          <p>Novo Horário</p>
-          <div>
-            <p>início: </p>
-            <input type="number" placeholder='00' onChange={updateHour} name='startHour' />
-            <span>h</span>
-            <input type="number" placeholder='00' onChange={updateHour} name='startMinute' />
-          </div>
-          <div>
-            <p>fim: </p>
-            <input type="number" placeholder='00' onChange={updateHour} name='endHour' />
-            <span>h</span>
-            <input type="number" placeholder='00' onChange={updateHour} name='endMinute' />
-          </div>
-          <div>
-            <button style={lexendDeca.style} onClick={closeModal}>Cancelar</button>
-            <button style={lexendDeca.style} onClick={updateAgenda}>Criar</button>
-          </div>
+          {getModalContent()}
         </div>
       </div>
     </div>

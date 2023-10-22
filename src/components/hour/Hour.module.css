@@ -9,4 +9,9 @@
     justify-content: center;
     color: #505050;
     margin-bottom: 10px;
+    cursor: pointer;
+
+    @media (min-width: 700px){
+        width: 85px;
+    }
 }

@@ -49,7 +49,6 @@
     box-sizing: border-box;
     background-color: #f0f0f0;
     border-radius: 20px;
-    margin-top: 10px;
 
     overflow: scroll;
 }
@@ -103,7 +102,13 @@
 
 .modal > div > p {
     margin: 0px 10px;
-    font-size: 18px;
+    font-size: 16px;
+    color: #313131;
+}
+
+.modal > div > span {
+    margin: 3px 5px;
+    font-size: 16px;
     color: #313131;
 }
 
@@ -127,9 +132,19 @@
     border: none;
     box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.25);
     color: #313131;
-    width: 30px;
+    width: 100px;
     text-align: center;
     margin: 5px 3px
+}
+
+.modal input[type=radio] {
+    width: auto;
+    box-shadow: none;
+    margin: 5px
+}
+
+.modal label {
+    width: 100px;
 }
 
 .modal > div > p {
@@ -137,22 +152,60 @@
     text-align: right;
 }
 
-/* Chrome, Safari, Edge, Opera */
-.modal input::-webkit-outer-spin-button,
-.modal input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* Firefox */
-.modal input[type=number] {
-  -moz-appearance: textfield;
-}
-
-.modal button:last-child {
-    background-color: rgba(255,0,0,0.50);
+.danger-button {
+    background-color: rgba(255,0,0,0.50) !important;
 }
 
 .hide-modal {
     display: none !important;
+}
+
+.hour-group-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.hour-group-container > div{
+    flex-grow: 1;
+    margin: 0px 5px;
+}
+
+.wday-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+    margin-bottom: 5px;
+
+    @media (min-width: 700px){
+        padding: 0px 12px;
+    }
+}
+
+.wday-selector button {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background-color: #6B8CFF;
+    color: white;
+    font-weight: bolder;
+    box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (min-width: 700px){
+        display: none;
+    }
+}
+
+.wday-selector span{
+    width: 85px;
+    text-align: center;
 }
