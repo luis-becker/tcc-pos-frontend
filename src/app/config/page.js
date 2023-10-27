@@ -81,6 +81,16 @@ export default function config() {
     await updateUser({ ...user, name })
     clearInputs()
   }
+  
+  async function updateService(event) {
+    let service = event.target.value
+    await updateUser({ ...user, service })
+  }
+
+  async function updateAddress(event) {
+    let address = event.target.value
+    await updateUser({ ...user, address })
+  }
 
   function updateHour(e) {
     console.log(e.target.value)
@@ -300,6 +310,8 @@ export default function config() {
       <div className={styles['page-container']}>
         <div className={styles['header-content']}>
           <Header menuActive='config' titleFirst='Configuração' titleSecond={user.name} config callback={updateName} />
+          <input type='text' style={lexendDeca.style} placeholder='Serviço' onBlur={updateService} defaultValue={user.service} />
+          <input type='text' style={lexendDeca.style} placeholder='Endereço' onBlur={updateAddress} defaultValue={user.address} />
           <div className={styles['wday-selector']}>
             <button onClick={previousWeekday}><img src="/images/chevron_left.svg" /></button>
             {renderWDaysNames()}

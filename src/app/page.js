@@ -27,6 +27,8 @@ export default function Home() {
   function groupSchedulesByDate(schedules) {
     let groupedSchedules = {}
     schedules.forEach(schedule => {
+      schedule.time.start = schedule.time.start.split('.')[0]
+      schedule.time.end = schedule.time.end.split('.')[0]
       if (schedule.canceled == true) return
       let date = new Date(schedule.time.start)
       let wday = dateUtils.getWeekday(date)

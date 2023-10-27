@@ -54,6 +54,13 @@ function getUserById(id) {
   return authUtils.fetchAuth(USER_URI+'/'+id, {method})
 }
 
+function createSchedule(schedule) {
+  let method = 'POST'
+  let headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+  let body = JSON.stringify(schedule)
+  return authUtils.fetchAuth(SCHEDULE_URI, {method, headers, body})
+}
+
 export default {
   register,
   login,
@@ -62,5 +69,6 @@ export default {
   getUser,
   updateUser,
   createUser,
-  getUserById
+  getUserById,
+  createSchedule
 }
