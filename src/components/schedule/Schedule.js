@@ -10,15 +10,20 @@ const lexendDeca = Lexend_Deca({ subsets: ["latin"], weight: '500' })
 
 export default function Schedule(params) {
 
-  if (params.schedule == undefined) return (<></>)
-  if (params.schedule.canceled) return (<></>)
+  let schedule = params.schedule
+
+  if (schedule == undefined) return (<></>)
+  if (schedule.canceled) return (<></>)
 
   const { setIsModalOpen, setCancelCallback } = params.modalOps
 
   const router = useRouter()
 
-  let service = params.schedule?.service
-  let address = params.schedule?.address
+  let service = schedule?.service
+  let address = schedule?.address
+
+  let user = params.user
+  let title = schedule?.owner.ref == user?._id ? schedule?.attendee.name || service : service
 
   let startTime = new Date(params.schedule?.time.start)
   let hours = startTime.getHours()
@@ -55,7 +60,7 @@ export default function Schedule(params) {
   return (
     <button className={className}>
       <div>
-        <p style={lexendDeca.style}>{service}</p>
+        <p style={lexendDeca.style}>{title}</p>
         <p style={lexendDeca.style}>{stringStartTime}</p>
       </div>
       <div>

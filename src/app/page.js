@@ -14,6 +14,7 @@ const lexendDeca = Lexend_Deca({subsets: ["latin"]})
 
 export default function Home() {
   const [schedules, setSchedules] = useState([])
+  const [user, setUser] = useState()
   const [cancelCallback, setCancelCallback] = useState(() => { })
   const [isModalOpen, setIsModalOpen] = useState(false)
   const router = useRouter()
@@ -22,6 +23,12 @@ export default function Home() {
     let res = await queries.getSchedules()
     if (res.status == 401) router.push('/login')
     setSchedules(await res.json())
+  }
+
+  async function fetchUser() {
+    let res = await queries.getUser()
+    if (res.status == 401) router.push('/login')
+    setUser(await res.json())
   }
 
   function groupSchedulesByDate(schedules) {
@@ -61,7 +68,7 @@ export default function Home() {
             {value.map(schedule => {
               return (
                 <li key={schedule.schedule._id}>
-                  <Schedule schedule={schedule.schedule} modalOps={{ setIsModalOpen, setCancelCallback }} />
+                  <Schedule schedule={schedule.schedule} modalOps={{ setIsModalOpen, setCancelCallback }} user={user}/>
                 </li>
               )
             })}
@@ -77,6 +84,7 @@ export default function Home() {
 
   useEffect(function () {
     fetchSchedules()
+    fetchUser()
   }, [])
 
   function closeModal() {
