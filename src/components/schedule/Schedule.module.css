@@ -37,6 +37,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    user-select: all;
 }
 
 .schedule-container > div:first-child > p{

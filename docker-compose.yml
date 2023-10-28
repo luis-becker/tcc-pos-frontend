@@ -24,6 +24,7 @@ services:
       - tcc-pos-net
     depends_on:
       - app
+    restart: always
 
 networks:
   tcc-pos-net:

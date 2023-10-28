@@ -162,7 +162,6 @@ export default function User({params}) {
     let endHour = end.getHours() > 9 ? end.getHours() : `0${end.getHours()}`
     let endMinute = end.getMinutes() > 9 ? end.getMinutes() : `0${end.getMinutes()}`
     let service = pageUser.service || pageUser.name
-    console.log(pageUser.address)
     let newSchedule = {
       owner: {ref: pageUser._id, name: pageUser.name},
       time:{
@@ -179,7 +178,6 @@ export default function User({params}) {
   }
 
   function openModal(hour) {
-    console.log(hour)
     setSelected(hour)
     setIsModalOpen(true)
   }

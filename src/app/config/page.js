@@ -27,16 +27,8 @@ export default function config() {
     fetchUser()
   }, [])
 
-  function clearInputs() {
-    let inputs = document.getElementsByTagName('input')
-    Array.from(inputs).forEach(function (element) {
-      element.value = ''
-    });
-  }
-
   function closeModal() {
     setInputHour({ weekDay: null, startTime: { hour: null, minute: null }, endTime: { hour: null, minute: null } })
-    clearInputs()
     setIsModalOpen(false)
   }
 
@@ -79,7 +71,6 @@ export default function config() {
   async function updateName(event) {
     let name = event.target.value
     await updateUser({ ...user, name })
-    clearInputs()
   }
   
   async function updateService(event) {
@@ -93,7 +84,6 @@ export default function config() {
   }
 
   function updateHour(e) {
-    console.log(e.target.value)
     let name = e.target.name
     let value = e.target.value
     let hour = value.split(':')[0]
@@ -215,7 +205,7 @@ export default function config() {
         </div>
         <div>
           <button type='button' style={lexendDeca.style} onClick={closeModal}>Cancelar</button>
-          <button type='submit' style={lexendDeca.style} onClick={updateAgenda} className={styles['danger-button']}>Criar</button>
+          <button type='button' style={lexendDeca.style} onClick={updateAgenda} className={styles['danger-button']}>Criar</button>
         </div>
       </form>
     )
@@ -310,8 +300,10 @@ export default function config() {
       <div className={styles['page-container']}>
         <div className={styles['header-content']}>
           <Header menuActive='config' titleFirst='Configuração' titleSecond={user.name} config callback={updateName} />
-          <input type='text' style={lexendDeca.style} placeholder='Serviço' onBlur={updateService} defaultValue={user.service} />
-          <input type='text' style={lexendDeca.style} placeholder='Endereço' onBlur={updateAddress} defaultValue={user.address} />
+          <div>
+            <input type='text' style={lexendDeca.style} placeholder='Serviço' onBlur={updateService} defaultValue={user.service} id='service-input'/><br/>
+            <input type='text' style={lexendDeca.style} placeholder='Endereço' onBlur={updateAddress} defaultValue={user.address} id='address-input'/>
+          </div>
           <div className={styles['wday-selector']}>
             <button onClick={previousWeekday}><img src="/images/chevron_left.svg" /></button>
             {renderWDaysNames()}

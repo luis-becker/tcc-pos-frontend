@@ -42,6 +42,25 @@
     overflow: hidden;
 }
 
+.header-content > div> input {
+    border: none;
+    margin-left: 5px;
+    font-size: 16px;
+    color: #313131;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.header-content > div> input:first-child {
+    font-size: 18px !important;
+}
+
+.header-content > div> input:focus {
+    outline: none;
+}
+
+
 .header-content > div:last-child{
     width: 100%;
     flex-grow: 1;
