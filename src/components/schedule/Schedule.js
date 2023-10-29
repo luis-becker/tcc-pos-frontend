@@ -9,6 +9,8 @@ import { useState } from 'react'
 const lexendDeca = Lexend_Deca({ subsets: ["latin"], weight: '500' })
 
 export default function Schedule(params) {
+  const router = useRouter()
+  const [hide, setHide] = useState(false)
 
   let schedule = params.schedule
 
@@ -17,7 +19,6 @@ export default function Schedule(params) {
 
   const { setIsModalOpen, setCancelCallback } = params.modalOps
 
-  const router = useRouter()
 
   let service = schedule?.service
   let address = schedule?.address
@@ -45,7 +46,6 @@ export default function Schedule(params) {
     setIsModalOpen(true)
   }
 
-  const [hide, setHide] = useState(false)
 
   function cancelCallback() {
     return async () => {

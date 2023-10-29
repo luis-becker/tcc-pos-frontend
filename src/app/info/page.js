@@ -10,10 +10,12 @@ import { useRouter } from "next/navigation"
 export default function Info() {
 
   const [user, setUser] = useState()
+  const [thisLocation, setLocation] = useState()
   const router = useRouter()
 
   useEffect(() => {
     fetchUser()
+    setLocation(location?.hostname)
   }, [])
 
 
@@ -28,7 +30,7 @@ export default function Info() {
   }
 
   function getShareLink() {
-    return `${location.hostname}/user/${user?._id}`
+    return `${thisLocation}/user/${user?._id}`
   }
 
   return (

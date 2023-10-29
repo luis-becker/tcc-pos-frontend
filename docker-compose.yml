@@ -12,7 +12,7 @@ services:
       - ./:/app
     networks:
       - tcc-pos-net
-    command: "npm run dev"
+    command: "npm run start"
 
   nginx_proxy:
     image: nginx

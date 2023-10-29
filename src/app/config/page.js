@@ -13,7 +13,7 @@ import dateUtils from '@/src/utils/dateUtils'
 
 const lexendDeca = Lexend_Deca({ subsets: ["latin"] })
 
-export default function config() {
+export default function Config() {
 
   const router = useRouter()
   const [user, setUser] = useState({ name: 'Loading...' })
