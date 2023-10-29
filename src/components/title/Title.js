@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './Title.module.css'
 import {Comfortaa} from "next/font/google"
 const comfortaa = Comfortaa({subsets: ["latin"]})
