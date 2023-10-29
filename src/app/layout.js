@@ -12,6 +12,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body className={styles.layout} style={lexendDeca.style}>
           {children}
       </body>
