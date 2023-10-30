@@ -3,7 +3,7 @@
   "short_name": "AgendaC",
   "theme_color": "#6B8CFF",
   "background_color": "#AEC0FF",
-  "display": "fullScreen",
+  "display": "standalone",
   "orientation": "any",
   "scope": "/",
   "start_url": "/",
