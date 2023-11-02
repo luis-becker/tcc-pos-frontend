@@ -40,7 +40,7 @@ export default function Home() {
       let date = new Date(schedule.time.start)
       let wday = dateUtils.getWeekday(date)
       let day = date.getDate()
-      let month = date.getMonth()
+      let month = date.getMonth() + 1
       month = month < 10 ? `0${month}` : month
       let year = date.getFullYear()
       let key = `${year}-${month}-${day}`
