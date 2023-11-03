@@ -11,12 +11,21 @@ export default function Info() {
 
   const [user, setUser] = useState()
   const [thisLocation, setLocation] = useState()
+  const [notifications, setNotifications] = useState([])
   const router = useRouter()
 
   useEffect(() => {
     fetchUser()
+    fetchNotifications()
     setLocation(location?.hostname)
   }, [])
+
+  async function fetchNotifications() {
+    let res = await queries.getNotifications()
+    let n = await res.json()
+    if (res.status == 200) setNotifications(n)
+    else if (res.status == 401) router.push('/login')
+  }
 
 
   async function fetchUser() {
@@ -33,6 +42,27 @@ export default function Info() {
     return `${thisLocation}/user/${user?._id}`
   }
 
+  async function ackNotification (e) {
+    await queries.ackNotifications([e.target.getAttribute('id')])
+    let dot = e.target.lastElementChild
+    dot.style.display = 'none'
+  }
+
+  function renderNotifications() {
+    return (
+      notifications.map((notification) => {
+        return (
+          <li key={notification._id}>
+            <div onClick={ackNotification} id={notification._id}>
+              <p>{notification.message}</p>
+              <img src="/images/dot.svg" />
+            </div>
+          </li>
+        )
+      })
+    )
+  }
+
   return (
     <div className={styles['page-background']}>
       <div className={styles['page-container']}>
@@ -42,6 +72,16 @@ export default function Info() {
             <div className={styles['share-link-container']}>
               <p>Link de compartilhamento</p>
               <p>{getShareLink()}</p>
+            </div>
+            <div className={styles['notifications-container']}>
+              <p>
+                Notificações
+              </p>
+              <ul>
+                {
+                  renderNotifications()
+                }
+              </ul>
             </div>
           </div>
         </div>

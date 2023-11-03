@@ -5,6 +5,7 @@ import authUtils from "./authUtils"
 const AUTH_URI = '/api/v1/auth'
 const SCHEDULE_URI = '/api/v1/schedule'
 const USER_URI = '/api/v1/user'
+const NOTIFICATIONS_URI = '/api/v1/notification'
 
 function register(email, password) {
   let method = 'POST'
@@ -61,6 +62,18 @@ function createSchedule(schedule) {
   return authUtils.fetchAuth(SCHEDULE_URI, {method, headers, body})
 }
 
+function getNotifications() {
+  let method = 'GET'
+  return authUtils.fetchAuth(NOTIFICATIONS_URI, {method})
+}
+
+function ackNotifications(notifications) {
+  let method = 'POST'
+  let headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+  let body = JSON.stringify(notifications)
+  return authUtils.fetchAuth(NOTIFICATIONS_URI+'/ack', {method, headers, body})
+}
+
 export default {
   register,
   login,
@@ -70,5 +83,8 @@ export default {
   updateUser,
   createUser,
   getUserById,
-  createSchedule
+  createSchedule,
+  getNotifications,
+  ackNotifications,
+  ackNotifications
 }
